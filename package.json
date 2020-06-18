@@ -1,0 +1,22 @@
+{
+  "name": "smr-parking",
+  "version": "1.0.0",
+  "description": "Sample app to track where you can park in Samara",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kanabserg/smr-parking.git"
+  },
+  "author": "Sergey K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kanabserg/smr-parking/issues"
+  },
+  "homepage": "https://github.com/kanabserg/smr-parking#readme",
+  "dependencies": {
+    "@types/jquery": "^3.3.38"
+  }
+}
