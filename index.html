@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-capable" content="yes">
         
         <link rel="shortcut icon" href="./img/icons/icon-192x192.png">    
@@ -26,12 +26,13 @@
         <!--CDN-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment-duration-format@2.3.2/lib/moment-duration-format.min.js"></script>
 
         <script src="js/app.js"></script>
     </head>
     <body>
-        <label id="current-date"></label>
-        <div id="content">
+        <div id="nav-bar"></div>
+        <div id="page-content">
             <table id="sign-info"></table>
         </div>
     </body>
