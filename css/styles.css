@@ -2,24 +2,36 @@ body {
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
-    background-color: skyblue;
+    background-color: lightgrey;
     margin: 0px;
     font-family: -apple-system, system-ui, BlinkMacSystemFont;
     font-size: 17pt;
  }
+
+ @media (prefers-color-scheme: light) {
+    #nav-bar {
+        background-color: white;
+        color: black;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #nav-bar {
+        background-color: black;
+        color: white;
+    }
+}
 
  #nav-bar{     
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: white;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 500;
-  color: black;
  }
 
  #page-content{
@@ -27,6 +39,7 @@ body {
  }
  #sign-info{ 
      width: 100%;
+     margin-left: -10px;
  }
  #sign-info tr{
      padding-top: 10px;
