@@ -1,40 +1,43 @@
-$(document).ready(function () {
-    var now = moment();
-    $('#nav-bar').text(now.format('dddd, Do MMMM YYYY'));
-    // type: 1 - нельзя парковаться по нечетным, 2 - нельзя парковаться по четным
-    let singArray = [
-        {
-            type: 1, isSingle: false, desc: 'Парный, нельзя парковаться по нечетным', isAvailable: function (now) {
-                return (now.date() % 2 === 0 && now.hour() < 21) || (now.date() % 2 !== 0 && moment().add(1, 'day').date() % 2 === 0 && now.hour() >= 19);
-            },
-            calculateAvailableTime: function (now) {
-                var futureMoment = (now.date() % 2 === 0 ? moment(): moment().add(1, 'day')).set({'hour':21,'minute':0,'second':0});
-                return timeDiff(futureMoment, now);
-            }
-        },
-        {
-            type: 2, isSingle: false, desc: 'Парный, нельзя парковаться по четным', isAvailable: function (now) {
-                return (now.date() % 2 === 0 && now.hour() >= 19) || (now.date() % 2 !== 0 && now.hour() <= 21);
-            }, calculateAvailableTime: function (now) {
-                return timeDiff(moment().set({'hour':21,'minute':0,'second':0}), now);
-            }
-        },
-        {
-            type: 1, isSingle: true, desc: 'Одинарный, нельзя парковаться по нечетным', isAvailable: function (now) {
-                return now.date() % 2 === 0;
-            }, calculateAvailableTime: function (now) {
-                return timeDiff(moment().add(1, 'day').set({'hour':0,'minute':0,'second':0}), now);
-            }
-        },
-        {
-            type: 2, isSingle: true, desc: 'Одинарный, нельзя парковаться по четным', isAvailable: function (now) {
-                return now.date() % 2 !== 0;
-            }, calculateAvailableTime: function (now) {
-                return timeDiff(moment().add(1, 'day').set({'hour':0,'minute':0,'second':0}), now);
-            }
-        }
-    ];
 
+// type: 1 - нельзя парковаться по нечетным, 2 - нельзя парковаться по четным
+let singArray = [
+    {
+        type: 1, isSingle: false, desc: 'Парный, нельзя парковаться по нечетным', isAvailable: function (now) {
+            return (now.date() % 2 === 0 && now.hour() < 21) || (now.date() % 2 !== 0 && moment().add(1, 'day').date() % 2 === 0 && now.hour() >= 19);
+        },
+        calculateAvailableTime: function (now) {
+            var futureMoment = (now.date() % 2 === 0 ? moment() : moment().add(1, 'day')).set({ 'hour': 21, 'minute': 0, 'second': 0 });
+            return timeDiff(futureMoment, now);
+        }
+    },
+    {
+        type: 2, isSingle: false, desc: 'Парный, нельзя парковаться по четным', isAvailable: function (now) {
+            return (now.date() % 2 === 0 && now.hour() >= 19) || (now.date() % 2 !== 0 && now.hour() < 21);
+        }, calculateAvailableTime: function (now) {            
+            var futureMoment = (now.date() % 2 !== 0 ? moment() : moment().add(1, 'day')).set({ 'hour': 21, 'minute': 0, 'second': 0 });
+            return timeDiff(futureMoment, now);
+        }
+    },
+    {
+        type: 1, isSingle: true, desc: 'Одинарный, нельзя парковаться по нечетным', isAvailable: function (now) {
+            return now.date() % 2 === 0;
+        }, calculateAvailableTime: function (now) {
+            return timeDiff(moment().add(1, 'day').set({ 'hour': 0, 'minute': 0, 'second': 0 }), now);
+        }
+    },
+    {
+        type: 2, isSingle: true, desc: 'Одинарный, нельзя парковаться по четным', isAvailable: function (now) {
+            return now.date() % 2 !== 0;
+        }, calculateAvailableTime: function (now) {
+            return timeDiff(moment().add(1, 'day').set({ 'hour': 0, 'minute': 0, 'second': 0 }), now);
+        }
+    }
+];
+
+$(document).ready(function () {
+    let now = moment();
+    $('#nav-bar').text(now.format('dddd, Do MMMM YYYY'));
+    $('#sign-info tr').remove();
     singArray.forEach(sign => {
         if (sign.isAvailable(now)) {
             $('#sign-info').append('<tr><td><img src=img/' + sign.type + '.png></td><td class="quant">' + (sign.isSingle ? "Одинарный" : "Парный") + '</td><td class="time">' + sign.calculateAvailableTime(now) + '</td></tr>');
