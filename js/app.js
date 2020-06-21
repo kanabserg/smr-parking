@@ -5,35 +5,32 @@ $(document).ready(function () {
     let singArray = [
         {
             type: 1, isSingle: false, desc: 'Парный, нельзя парковаться по нечетным', isAvailable: function (now) {
-                return (now.day() % 2 === 0 && now.hour() < 21) || (now.day() % 2 !== 0 && moment().add(1, 'day').day() % 2 === 0 && now.hour() >= 19);
+                return (now.date() % 2 === 0 && now.hour() < 21) || (now.date() % 2 !== 0 && moment().add(1, 'day').date() % 2 === 0 && now.hour() >= 19);
             },
             calculateAvailableTime: function (now) {
-                var futureMoment = now.day() % 2 === 0 ? moment().hour(21).minute(0).seconds(0) : moment().add(1, 'day').hour(21).minute(0).seconds(0);
-                return moment.duration(futureMoment.diff(now)).format("h:mm");
+                var futureMoment = (now.date() % 2 === 0 ? moment(): moment().add(1, 'day')).set({'hour':21,'minute':0,'second':0});
+                return timeDiff(futureMoment, now);
             }
         },
         {
             type: 2, isSingle: false, desc: 'Парный, нельзя парковаться по четным', isAvailable: function (now) {
-                return (now.day() % 2 === 0 && now.hour() >= 19) || (now.day() % 2 !== 0 && now.hour() <= 21);
+                return (now.date() % 2 === 0 && now.hour() >= 19) || (now.date() % 2 !== 0 && now.hour() <= 21);
             }, calculateAvailableTime: function (now) {
-                var futureMoment = moment().hour(21).minute(0).seconds(0);
-                return moment.duration(futureMoment.diff(now)).format("h:mm");
+                return timeDiff(moment().set({'hour':21,'minute':0,'second':0}), now);
             }
         },
         {
             type: 1, isSingle: true, desc: 'Одинарный, нельзя парковаться по нечетным', isAvailable: function (now) {
-                return now.day() % 2 === 0;
+                return now.date() % 2 === 0;
             }, calculateAvailableTime: function (now) {
-                var futureMoment = moment().add(1, 'day').hour(0).minute(0).seconds(0);
-                return moment.duration(futureMoment.diff(now)).format("h:mm");
+                return timeDiff(moment().add(1, 'day').set({'hour':0,'minute':0,'second':0}), now);
             }
         },
         {
             type: 2, isSingle: true, desc: 'Одинарный, нельзя парковаться по четным', isAvailable: function (now) {
-                return now.day() % 2 !== 0;
+                return now.date() % 2 !== 0;
             }, calculateAvailableTime: function (now) {
-                var futureMoment = moment().add(1, 'day').hour(0).minute(0).seconds(0);
-                return moment.duration(futureMoment.diff(now)).format("h:mm");
+                return timeDiff(moment().add(1, 'day').set({'hour':0,'minute':0,'second':0}), now);
             }
         }
     ];
@@ -44,17 +41,23 @@ $(document).ready(function () {
         }
     });
 });
-    
-window.addEventListener('load', function() {
+
+window.addEventListener('load', function () {
     registerSW();
 });
 
-async function registerSW(){
-    if ('serviceWorker' in navigator){
-        try{
+async function registerSW() {
+    if ('serviceWorker' in navigator) {
+        try {
             await navigator.serviceWorker.register('./service-worker.js')
-        } catch (e){
+        } catch (e) {
             console.log('Service worker registration failed.');
         }
     }
+}
+
+function timeDiff(futureMoment, now) {
+    return moment.duration(futureMoment.diff(now)).format(function () { return this.duration.asSeconds() >= 3600 ? "h:mm" : "m _" }, {
+        trim: false
+    });
 }
