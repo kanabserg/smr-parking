@@ -29,7 +29,6 @@ let singArray = [
 ];
 
 $(document).ready(function () {
-    setTimeout(() => { displaySigns(); setInterval(displaySigns, 60000) }, (60 - moment().seconds()) * 1000);
     displaySigns();
 });
 
@@ -47,13 +46,15 @@ window.addEventListener('load', function () {
 
 function displaySigns() {
     let now = moment();
-    $('#nav-bar').text(now.format('hh:mm:ss dddd, Do MMMM YYYY'));
+    $('#nav-bar').text(now.format('dddd, Do MMMM YYYY'));
     $('#sign-info tr').remove();
     singArray
         .filter(sign => sign.isAvailable(now))
         .forEach(sign =>
             $('#sign-info').append('<tr><td><img src=img/' + sign.type + '.png></td><td class="quant">' + (sign.isSingle ? "Одинарный" : "Парный") + '</td><td class="time">' + sign.calculateAvailableTime(now) + '</td></tr>')
         );
+    
+    setTimeout(() => displaySigns(), (60 - moment().seconds()) * 1000);
 }
 
 function timeDiff(futureMoment, now) {
